@@ -24,6 +24,7 @@
       let articleTag = document.querySelector("#articleTag");
       let articles = document.querySelector("#articles"); //顯示所有文章
       let articleSend = document.querySelector("#articleSend");
+      let articleDelete = document.querySelector("#articleDelete");
       let dbUrl = "http://localhost:3000/articles";
       let articlesData = [];
 
@@ -44,7 +45,7 @@
         let createTag = articleTag.value;
         let createObj = {};
         createObj.title = createTitle;
-        createObj.tag = createTag;
+        createObj.tab = createTag;
         console.log(createObj);
 
         axios
@@ -59,14 +60,31 @@
           });
       });
 
+      //按下刪除按鈕
+      function articleDeleteFunc(id) {
+        axios
+          .delete(dbUrl + "/" + id)
+          .then((res) => {
+            alert("順利刪除！");
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
+
       //渲染
       function renderData() {
         let articlesDataStr = "";
         articlesData.forEach(function (item, i) {
           console.log(item);
-          articlesDataStr += `<div>這是第 ${i + 1} 篇文章，標題是 ${
-            item.title
-          }，標籤是 ${item.tab}</div>`;
+          articlesDataStr += `<div data-id="${item.id}">這是第 ${
+            i + 1
+          } 篇文章，標題是 ${item.title}，標籤是 ${
+            item.tab
+          }</div><input type="button" value="刪除" id="articleDelete" onclick="articleDeleteFunc('${
+            item.id
+          }')" />`;
         });
         articles.innerHTML = articlesDataStr;
       }
