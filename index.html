@@ -17,23 +17,28 @@
     新增標籤：<input type="text" id="articleTag" /><br />
     <input type="button" value="送出" id="articleSend" />
 
+    <div id="articles"></div>
+
     <script>
       let articleTitle = document.querySelector("#articleTitle");
       let articleTag = document.querySelector("#articleTag");
+      let articles = document.querySelector("#articles"); //顯示所有文章
       let articleSend = document.querySelector("#articleSend");
-      let articleUrl = "http://localhost:3000/articles";
-      let dataStore = [];
+      let dbUrl = "http://localhost:3000/articles";
+      let articlesData = [];
 
       axios
-        .get(articleUrl)
+        .get(dbUrl)
         .then((res) => {
           console.log(res.data);
-          dataStore = res.data;
+          articlesData = res.data;
+          renderData();
         })
         .catch((err) => {
           console.log(err.response);
         });
 
+      //按下新增按鈕
       articleSend.addEventListener("click", function (e) {
         let createTitle = articleTitle.value;
         let createTag = articleTag.value;
@@ -43,14 +48,28 @@
         console.log(createObj);
 
         axios
-          .post(articleUrl, createObj)
+          .post(dbUrl, createObj)
           .then((res) => {
             console.log(res.data);
+            articlesData = res.data;
+            renderData();
           })
           .catch((err) => {
             console.log(err.response);
           });
       });
+
+      //渲染
+      function renderData() {
+        let articlesDataStr = "";
+        articlesData.forEach(function (item, i) {
+          console.log(item);
+          articlesDataStr += `<div>這是第 ${i + 1} 篇文章，標題是 ${
+            item.title
+          }，標籤是 ${item.tab}</div>`;
+        });
+        articles.innerHTML = articlesDataStr;
+      }
     </script>
   </body>
 </html>
