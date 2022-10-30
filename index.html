@@ -13,10 +13,14 @@
     ></script>
   </head>
   <body>
+    <h2>JSON-server 練習</h2>
+
     新增標題：<input type="text" id="articleTitle" /><br />
     新增標籤：<input type="text" id="articleTag" /><br />
-    <input type="button" value="送出" id="articleSend" />
+    <input type="button" value="新增" id="articleSend" />
 
+    <br /><br />
+    <h2>資料列表</h2>
     <div id="articles"></div>
 
     <script>
@@ -78,13 +82,13 @@
         let articlesDataStr = "";
         articlesData.forEach(function (item, i) {
           console.log(item);
-          articlesDataStr += `<div data-id="${item.id}">這是第 ${
-            i + 1
-          } 篇文章，標題是 ${item.title}，標籤是 ${
-            item.tab
-          }</div><input type="button" value="刪除" id="articleDelete" onclick="articleDeleteFunc('${
+          articlesDataStr += `<div style="display:inline-block" data-id="${
             item.id
-          }')" />`;
+          }">這是第 ${i + 1} 篇文章，標題是 ${item.title}，標籤是 ${
+            item.tab
+          }</div>&nbsp;&nbsp;<input type="button" value="刪除" id="articleDelete" onclick="articleDeleteFunc('${
+            item.id
+          }')" /><br/><br/>`;
         });
         articles.innerHTML = articlesDataStr;
       }
