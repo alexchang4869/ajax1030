@@ -5,10 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"
+      integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
   <body>
     新增標題：<input type="text" id="articleTitle" /><br />
     新增標籤：<input type="text" id="articleTag" /><br />
     <input type="button" value="送出" id="articleSend" />
+
+    <div id="articles"></div>
+
+    <script>
+      let articleTitle = document.querySelector("#articleTitle");
+      let articleTag = document.querySelector("#articleTag");
+      let articles = document.querySelector("#articles"); //顯示所有文章
+
+      let dbUrl = "http://localhost:3000/articles";
+      let articlesData = [];
+
+      axios
+        .get(dbUrl)
+        .then((res) => {
+          console.log(res.data);
+          articlesData = res.data;
+          renderData();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+
+      function renderData() {
+        let articlesDataStr = "";
+        articlesData.forEach(function (item, i) {
+          console.log(item);
+          articlesDataStr += `<div>這是第 ${i + 1} 篇文章，標題是 ${
+            item.title
+          }，標籤是 ${item.tab}</div>`;
+        });
+        articles.innerHTML = articlesDataStr;
+      }
+    </script>
   </body>
 </html>
